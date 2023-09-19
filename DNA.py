@@ -1,10 +1,11 @@
+import os
 import binascii
 from time import time
 
 class Compression:
 
     def __init__(self):
-        self.namez = input("Compress: c Extract: e ")
+        self.namez = input("Compress: c Extract: e Check file: check ")
 
     def compress_file(self, input_file):
         corridors = 0
@@ -168,9 +169,9 @@ class Compression:
                         r3 = 0
                         r4 = ""
                         e9 = "1"
-                        e9 = 0
-                        
+                      
 
+                        e9 = 0
                         r5 = ""
                         e10 = ""
                         s = ""
@@ -318,6 +319,10 @@ class Compression:
         return sda4
 
 
+def check_file_exists(filename):
+    return os.path.exists(filename)
+
+
 def main():
     compression = Compression()
     input_file = input("Enter the name of the file to compress: ")
@@ -329,9 +334,8 @@ def main():
         reversed_data = compression.extract_and_reverse_compression(compressed_data)
         print("Reversed Data:")
         print(reversed_data)
-    else:
-        print("Invalid choice. Use 'c' for compression or 'e' for extraction.")
+
 
 
 if __name__ == "__main__":
-    main()                      
+    main()                        
