@@ -816,7 +816,7 @@ class compression:
                                     #print(len(sda2))
 
 
-                                    if cvf1==4:
+                                    if cvf1==1:
                                      
                                         long_1=len(sda2)
                                         add_bits=""
