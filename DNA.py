@@ -185,6 +185,7 @@ class Compression:
                             sda10 = ""
                             sda11 = ""
                             start = 1
+                            start1 = 2
     
                             while block < lenf2:
                                 e4 = sda2[block + 4:block + 7]
@@ -208,6 +209,7 @@ class Compression:
                                     e1 = format(e8, "01b")  # 2catsr2&00/01
                                     sda5 = e1 + e1 + e5[3:8]
                                     start = 0
+                                    start1 = 0
                                     e10 = "2"
                                     sda10 += sda5
                                     if len(sda6) == 15:
@@ -221,24 +223,23 @@ class Compression:
                                         sda4 += sda3
                                         sda10 = ""
                                         start = 1
+                                        start1 = 0
                                     elif e10 == "2":  # can
                                         sda3 = sda10 + "1" + e5
                                         sda4 += sda3
                                         sda10 = ""
                                         start = 1
+                                        start1 = 2
                                 if e8 == 1:
                                     e8 = 0
                                 block += 8
-                            if e10 == "0":  # 0 not compression after compression
+                            if e10 == "0" and len(e5)==8 and start1 != 2: # 0 not compression after compression
                                 sda3 = sda10 + "0" + e5
                                 sda4 += sda3
-                            elif e10 == "2":  # can # compression after not compression
+                            elif e10 == "2" and len(e5)==8 and start1 != 2: # can # compression after not compression
                                 sda3 = sda10 + "1" + e5
                                 sda4 += sda3
-                            if len(sda10) == 0:
-                                sda4 += "0"
-                            else:
-                                sda4 += "1"
+                          
                             sda10 = ""
                             sda2 = sda4
                             cvf1 += 1
@@ -287,10 +288,107 @@ class Compression:
                 data = compressed_file.read()
                 sda2 = bin(int(binascii.hexlify(data), 16))[2:]
                 lenf2 = len(sda2)
+                c=1
+                if c==1:
                 
-                while cvf1 < 23:
-                    block = 0
-                    sda4 = ""
+                            blockw = 5
+                            sda4 = ""
+                            block = 0
+                            e8 = 0
+                            ch1 = ""
+                            ch = 0
+                            r1 = ""
+                            r2 = ""
+    
+                            r3 = 0
+                            r4 = ""
+                            e9 = "1"
+                          
+    
+                            e9 = 0
+                            r5 = ""
+                            e10 = ""
+                            s = ""
+                            sda10 = ""
+                            sda11 = ""
+                            start = 1
+                            E5=""
+                            size_data3=sda2
+                            c=1
+                            if c==1:
+ 
+                                    if size_data3[0:9]=="000000001":
+                                        size_data3=size_data3[9:]
+                                    elif size_data3[0:8]=="00000001":
+                                        size_data3=size_data3[8:]
+                                    elif size_data3[0:7]=="0000001":
+                                        size_data3=size_data3[7:]
+                                    elif size_data3[0:6]=="000001":
+                                        size_data3=size_data3[6:]
+                                    elif size_data3[0:5]=="00001":
+                                        size_data3=size_data3[5:]
+                                    elif size_data3[0:4]=="0001":
+                                        size_data3=size_data3[4:]
+                                    elif size_data3[0:3]=="001":
+                                        size_data3=size_data3[3:]
+                                    elif size_data3[0:2]=="01":
+                                        size_data3=size_data3[2:]
+                                    elif size_data3[0:1]=="1":
+                                        size_data3=size_data3[1:]
+                            sda2=size_data3
+                
+                            while block < lenf2:
+                                e4 = sda2[block + 4:block + 7]
+                                e5 = sda2[block:block + 8]
+                                E6 = sda2[block:block + 7]
+                                ch1 = sda2[block + 1:block + 3]
+                                r1 = sda2[block:block + 1]
+                                r2 = sda2[block + 7:block + 8]
+                                r4 = sda2[block + 6:block + 7]
+                                r5 = sda2[block + 1:block + 2]
+                                E5=sda2[block+1:block + 10]
+                                e8 += 1
+                                if len(e5) == 8:
+                                    e1 = int(e4, 2)
+                                    e9 = int(r5, 2)
+                                ch = int(ch1, 2)
+                                r3 = int(r1, 2)
+                                sda5 = ""
+                                sda6 = ""
+                                sda7 = ""
+                                sda9 = ""
+                                
+                                if r3 == e8 and e9 == e8 and len(E6) == 7 and e9 != e8 and start == 1:
+                                   if len(E5)==9 and E5[0:1]=="1" or len(E5)==1 and E5[0:1]=="1"
+                                       sda3 = e1 +"0"+e1 + e5[2:7]+E5[:1]
+                                   sda4 += sda3
+                                   block += 7+9
+                                       
+                                elif e9 == e8 and r3 == e8 and len(E6) == 8 and start == 1:
+                                    if len(E5)==9 and E5[0:1]=="0" or len(E5)==1 and E5[0:1]=="0"
+                                       sda3 = e5+E5[:1]
+                                   sda4 += sda3
+                                   block += 8+9
+                               else:
+                                   sda3 = e5
+                                   block += 8
+                                if e8 == 1:
+                                    e8 = 0
+                                
+                           
+                            sda10 = ""
+                            sda2 = sda4
+                            cvf1 += 1
+                            if cvf1 == 1:
+                                long_1 = len(sda2)
+                                add_bits = ""
+                                count_bits = 8 - long_1 % 8
+                                z = 0
+                                if count_bits != 0:
+                                    while z < count_bits:
+                                        add_bits = "0" + add_bits
+                                        z = z + 1
+                                sda2 = add_bits + sda2
                     
                     while block < lenf2:
                         e4 = sda2[block:block+9]
