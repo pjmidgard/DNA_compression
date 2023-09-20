@@ -1,7 +1,6 @@
 import os
 import binascii
 from time import time
-#@Author Jurijus Pacalovas 
 
 namez = input("Compress: c Extract: e Check file: check ")
 
@@ -28,6 +27,7 @@ class Compression:
             blockw = 5
             blockw1 = 4
             input_file = input("What is name of file? ")
+        
             nameas = input_file
             nac = len(nameas)
             nameas = input_file + ".bin"
@@ -280,6 +280,7 @@ class Compression:
             blockw = 5
             e6 = 0
             e7 = 255
+            nac=len(nameas)
 
             with open(nameas, "rb") as compressed_file:
                 data = compressed_file.read()
@@ -367,14 +368,12 @@ class Compression:
                 sssssw = len(jl)
                 
                 # Save the extracted data to a file
-                output_file_name = "extracted_data.bin"
+                output_file_name = nameas[:nac-4]
                 with open(output_file_name, "wb") as output_file:
                     output_file.write(jl)
                 
                 return output_file_name
 
-d = Compression()
-xw1 = d.extract_and_reverse_compression()
 
 
 d=Compression()
@@ -389,4 +388,5 @@ print(xw)
 
 xw1=d.extract_and_reverse_compression()
 
-print(xw1)      
+print(xw1)
+           
