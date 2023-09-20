@@ -1,7 +1,7 @@
 import os
 import binascii
 from time import time
-#Author Jurijus Pacalovas 
+#@Author Jurijus Pacalovas 
 
 namez = input("Compress: c Extract: e Check file: check ")
 
