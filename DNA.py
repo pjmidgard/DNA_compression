@@ -243,7 +243,7 @@ class Compression:
                             sda10 = ""
                             sda2 = sda4
                             cvf1 += 1
-                            if cvf1 == 1:
+                            if cvf1 == 1000:
                                 long_1 = len(sda2)
                                 add_bits = ""
                                 count_bits = 8 - long_1 % 8
@@ -290,6 +290,30 @@ class Compression:
                 lenf2 = len(sda2)
                 c=1
                 if c==1:
+
+                    c=1
+                    if c==1:
+ 
+                                    if size_data3[0:9]=="000000001":
+                                        size_data3=size_data3[9:]
+                                    elif size_data3[0:8]=="00000001":
+                                        size_data3=size_data3[8:]
+                                    elif size_data3[0:7]=="0000001":
+                                        size_data3=size_data3[7:]
+                                    elif size_data3[0:6]=="000001":
+                                        size_data3=size_data3[6:]
+                                    elif size_data3[0:5]=="00001":
+                                        size_data3=size_data3[5:]
+                                    elif size_data3[0:4]=="0001":
+                                        size_data3=size_data3[4:]
+                                    elif size_data3[0:3]=="001":
+                                        size_data3=size_data3[3:]
+                                    elif size_data3[0:2]=="01":
+                                        size_data3=size_data3[2:]
+                                    elif size_data3[0:1]=="1":
+                                        size_data3=size_data3[1:]
+                    sda2=size_data3
+                    while assx < 10:
                 
                             blockw = 5
                             sda4 = ""
@@ -314,28 +338,7 @@ class Compression:
                             start = 1
                             E5=""
                             size_data3=sda2
-                            c=1
-                            if c==1:
- 
-                                    if size_data3[0:9]=="000000001":
-                                        size_data3=size_data3[9:]
-                                    elif size_data3[0:8]=="00000001":
-                                        size_data3=size_data3[8:]
-                                    elif size_data3[0:7]=="0000001":
-                                        size_data3=size_data3[7:]
-                                    elif size_data3[0:6]=="000001":
-                                        size_data3=size_data3[6:]
-                                    elif size_data3[0:5]=="00001":
-                                        size_data3=size_data3[5:]
-                                    elif size_data3[0:4]=="0001":
-                                        size_data3=size_data3[4:]
-                                    elif size_data3[0:3]=="001":
-                                        size_data3=size_data3[3:]
-                                    elif size_data3[0:2]=="01":
-                                        size_data3=size_data3[2:]
-                                    elif size_data3[0:1]=="1":
-                                        size_data3=size_data3[1:]
-                            sda2=size_data3
+                           
                 
                             while block < lenf2:
                                 e4 = sda2[block + 4:block + 7]
@@ -453,18 +456,41 @@ class Compression:
                             if e7 <= 0:
                                 e7 = 255
                             
-                            cvf1 += 1
+                            
                             sda2 = sda4
                             blockw = 5
                             sda4 = ""
                         
-                            n = int(sda2, 2)
-                            qqwslenf = len(sda2)
-                            qqwslenf = (qqwslenf / 8) * 2
-                            qqwslenf = str(qqwslenf)
-                            qqwslenf = "%0" + qqwslenf + "x"
-                            jl = binascii.unhexlify(qqwslenf % n)
-                            sssssw = len(jl)
+                            cvf1 += 1
+                            if cvf1 == 1000:
+                                long_1 = len(sda2)
+                                add_bits = ""
+                                count_bits = 8 - long_1 % 8
+                                z = 0
+                                if count_bits != 0:
+                                    while z < count_bits:
+                                        add_bits = "0" + add_bits
+                                        z = z + 1
+                                sda2 = add_bits + sda2
+                                n = int(sda2, 2)
+                                qqwslenf = len(sda2)
+                                qqwslenf = (qqwslenf / 8) * 2
+                                qqwslenf = str(qqwslenf)
+                                qqwslenf = "%0" + qqwslenf + "x"
+                                jl = binascii.unhexlify(qqwslenf % n)
+                                sssssw = len(jl)
+                                data = jl
+                                qqqwz = qqqwz + 1
+                                szxzzza = ""
+                                szxzs = ""
+                                assxw = assxw + 1
+                                if assxw == 1:
+                                    assx = 10
+                                    if assx == 10:
+                                        f2.write(jl)
+                                        x2 = time()
+                                        x3 = x2 - x
+                                        return print(x3)
                             
                             # Save the extracted data to a file
                             output_file_name = nameas[:nac-4]
