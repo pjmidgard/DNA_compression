@@ -365,11 +365,11 @@ class Compression:
                                    block += 7+9
                                        
                                 elif e9 == e8 and r3 == e8 and len(E6) == 8 and start == 1:
-                                    if len(E5)==9 and E5[0:1]=="0" or len(E5)==1 and E5[0:1]=="0":
+                                   if len(E5)==9 and E5[0:1]=="0" or len(E5)==1 and E5[0:1]=="0":
                                        sda3 = e5+E5[1:]
                                    sda4 += sda3
                                    block += 8+9
-                               else:
+                                else:
                                    sda3 = e5
                                    block += 8
                                 if e8 == 1:
@@ -390,90 +390,88 @@ class Compression:
                                         z = z + 1
                                 sda2 = add_bits + sda2
                     
-                    while block < lenf2:
-                        e4 = sda2[block:block+9]
+                            while block < lenf2:
+                                e4 = sda2[block:block+9]
+                                
+                                if e4 == "000000000":
+                                    e4 = "011100101"
+                                    sda4 += e4
+                                elif e4 == "011100101":
+                                    e4 = "000000000"
+                                    sda4 += e4
+                                else:
+                                    sda4 += e4
+                                
+                                block += 9
+                            
+                            sda2 = sda4
+                            sda4 = ""
+                            
+                            block = 0
+                            
+                            while block < lenf2:
+                                e4 = sda2[block:block+8]
+                                e1 = e4
+                                remaider = cvf1 % blockw + block // 16 + block
+                                
+                                r1 = (block // 8) + (block // blockw)
+                                r2 = (block // 8) + block + (block // 8)
+                                r3 = block % 3 + (block // 8)
+                                r4 = block % 4 + (block // blockw)
+                                
+                                if remaider == 0 and (r1 == 0 or r2 == blockw or r3 == 0 or r4 == 0):
+                                    e1 = e4[4:8] + e4[2:4] + e4[0:2]
+                                elif remaider == 0 and (r1 == blockw or r2 == blockw or r3 == blockw or r4 == blockw):
+                                    e1 = e4[4:8] + e4[0:4]
+                                elif remaider == 0:
+                                    e1 = e4[4:8] + e4[2:4] + e4[0:2]
+                                elif remaider == 1:
+                                    e1 = e4[4:8] + e4[0:4]
+                                
+                                e5 = int(e1, 2)
+                                
+                                if e5 == e6:
+                                    sda3 = format(e7, "08b")
+                                elif e5 == e7:
+                                    sda3 = format(e6, "08b")
+                                else:
+                                    sda3 = format(e5, "08b")
+                                
+                                sda4 += sda3
+                                blockw += 1
+                                
+                                if blockw == 15:
+                                    blockw == 1
+                                
+                                block += 8
+                            
+                            e6 += 3
+                            e7 -= 3
+                            
+                            if e6 >= 255:
+                                e6 = 0
+                            if e7 <= 0:
+                                e7 = 255
+                            
+                            cvf1 += 1
+                            sda2 = sda4
+                            blockw = 5
+                            sda4 = ""
                         
-                        if e4 == "000000000":
-                            e4 = "011100101"
-                            sda4 += e4
-                        elif e4 == "011100101":
-                            e4 = "000000000"
-                            sda4 += e4
-                        else:
-                            sda4 += e4
-                        
-                        block += 9
-                    
-                    sda2 = sda4
-                    sda4 = ""
-                    
-                    block = 0
-                    
-                    while block < lenf2:
-                        e4 = sda2[block:block+8]
-                        e1 = e4
-                        remaider = cvf1 % blockw + block // 16 + block
-                        
-                        r1 = (block // 8) + (block // blockw)
-                        r2 = (block // 8) + block + (block // 8)
-                        r3 = block % 3 + (block // 8)
-                        r4 = block % 4 + (block // blockw)
-                        
-                        if remaider == 0 and (r1 == 0 or r2 == blockw or r3 == 0 or r4 == 0):
-                            e1 = e4[4:8] + e4[2:4] + e4[0:2]
-                        elif remaider == 0 and (r1 == blockw or r2 == blockw or r3 == blockw or r4 == blockw):
-                            e1 = e4[4:8] + e4[0:4]
-                        elif remaider == 0:
-                            e1 = e4[4:8] + e4[2:4] + e4[0:2]
-                        elif remaider == 1:
-                            e1 = e4[4:8] + e4[0:4]
-                        
-                        e5 = int(e1, 2)
-                        
-                        if e5 == e6:
-                            sda3 = format(e7, "08b")
-                        elif e5 == e7:
-                            sda3 = format(e6, "08b")
-                        else:
-                            sda3 = format(e5, "08b")
-                        
-                        sda4 += sda3
-                        blockw += 1
-                        
-                        if blockw == 15:
-                            blockw == 1
-                        
-                        block += 8
-                    
-                    e6 += 3
-                    e7 -= 3
-                    
-                    if e6 >= 255:
-                        e6 = 0
-                    if e7 <= 0:
-                        e7 = 255
-                    
-                    cvf1 += 1
-                    sda2 = sda4
-                    blockw = 5
-                    sda4 = ""
-                
-                n = int(sda2, 2)
-                qqwslenf = len(sda2)
-                qqwslenf = (qqwslenf / 8) * 2
-                qqwslenf = str(qqwslenf)
-                qqwslenf = "%0" + qqwslenf + "x"
-                jl = binascii.unhexlify(qqwslenf % n)
-                sssssw = len(jl)
-                
-                # Save the extracted data to a file
-                output_file_name = nameas[:nac-4]
-                with open(output_file_name, "wb") as output_file:
-                    output_file.write(jl)
-                
-                return output_file_name
-
-
+                            n = int(sda2, 2)
+                            qqwslenf = len(sda2)
+                            qqwslenf = (qqwslenf / 8) * 2
+                            qqwslenf = str(qqwslenf)
+                            qqwslenf = "%0" + qqwslenf + "x"
+                            jl = binascii.unhexlify(qqwslenf % n)
+                            sssssw = len(jl)
+                            
+                            # Save the extracted data to a file
+                            output_file_name = nameas[:nac-4]
+                            with open(output_file_name, "wb") as output_file:
+                                output_file.write(jl)
+                            
+                            return output_file_name
 
 d=Compression()
 
