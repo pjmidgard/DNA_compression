@@ -360,13 +360,13 @@ class Compression:
                                 
                                 if r3 == e8 and e9 == e8 and len(E6) == 7 and e9 != e8 and start == 1:
                                    if len(E5)==9 and E5[0:1]=="1" or len(E5)==1 and E5[0:1]=="1"
-                                       sda3 = e1 +"0"+e1 + e5[2:7]+E5[:1]
+                                       sda3 = e1 +"0"+e1 + e5[2:7]+E5[1:]
                                    sda4 += sda3
                                    block += 7+9
                                        
                                 elif e9 == e8 and r3 == e8 and len(E6) == 8 and start == 1:
                                     if len(E5)==9 and E5[0:1]=="0" or len(E5)==1 and E5[0:1]=="0"
-                                       sda3 = e5+E5[:1]
+                                       sda3 = e5+E5[1:]
                                    sda4 += sda3
                                    block += 8+9
                                else:
