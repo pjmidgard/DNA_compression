@@ -1,6 +1,7 @@
 import os
 import binascii
 from time import time
+#Author Jurijus Pacalovas 
 
 namez = input("Compress: c Extract: e Check file: check ")
 
@@ -388,5 +389,4 @@ print(xw)
 
 xw1=d.extract_and_reverse_compression()
 
-print(xw1)
-           
+print(xw1)      
